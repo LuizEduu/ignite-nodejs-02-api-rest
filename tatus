@@ -1,0 +1,126 @@
+[1mdiff --git a/package-lock.json b/package-lock.json[m
+[1mindex 8feae85..58699c0 100644[m
+[1m--- a/package-lock.json[m
+[1m+++ b/package-lock.json[m
+[36m@@ -9,9 +9,11 @@[m
+       "version": "1.0.0",[m
+       "license": "ISC",[m
+       "dependencies": {[m
+[32m+[m[32m        "dotenv": "^16.0.3",[m
+         "fastify": "^4.13.0",[m
+         "knex": "^2.4.2",[m
+[31m-        "sqlite3": "^5.1.4"[m
+[32m+[m[32m        "sqlite3": "^5.1.4",[m
+[32m+[m[32m        "zod": "^3.20.6"[m
+       },[m
+       "devDependencies": {[m
+         "@rocketseat/eslint-config": "^1.2.0",[m
+[36m@@ -1546,6 +1548,14 @@[m
+         "node": ">=6.0.0"[m
+       }[m
+     },[m
+[32m+[m[32m    "node_modules/dotenv": {[m
+[32m+[m[32m      "version": "16.0.3",[m
+[32m+[m[32m      "resolved": "https://registry.npmjs.org/dotenv/-/dotenv-16.0.3.tgz",[m
+[32m+[m[32m      "integrity": "sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==",[m
+[32m+[m[32m      "engines": {[m
+[32m+[m[32m        "node": ">=12"[m
+[32m+[m[32m      }[m
+[32m+[m[32m    },[m
+     "node_modules/emoji-regex": {[m
+       "version": "9.2.2",[m
+       "resolved": "https://registry.npmjs.org/emoji-regex/-/emoji-regex-9.2.2.tgz",[m
+[36m@@ -5240,6 +5250,14 @@[m
+       "funding": {[m
+         "url": "https://github.com/sponsors/sindresorhus"[m
+       }[m
+[32m+[m[32m    },[m
+[32m+[m[32m    "node_modules/zod": {[m
+[32m+[m[32m      "version": "3.20.6",[m
+[32m+[m[32m      "resolved": "https://registry.npmjs.org/zod/-/zod-3.20.6.tgz",[m
+[32m+[m[32m      "integrity": "sha512-oyu0m54SGCtzh6EClBVqDDlAYRz4jrVtKwQ7ZnsEmMI9HnzuZFj8QFwAY1M5uniIYACdGvv0PBWPF2kO0aNofA==",[m
+[32m+[m[32m      "funding": {[m
+[32m+[m[32m        "url": "https://github.com/sponsors/colinhacks"[m
+[32m+[m[32m      }[m
+     }[m
+   },[m
+   "dependencies": {[m
+[36m@@ -6256,6 +6274,11 @@[m
+         "esutils": "^2.0.2"[m
+       }[m
+     },[m
+[32m+[m[32m    "dotenv": {[m
+[32m+[m[32m      "version": "16.0.3",[m
+[32m+[m[32m      "resolved": "https://registry.npmjs.org/dotenv/-/dotenv-16.0.3.tgz",[m
+[32m+[m[32m      "integrity": "sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ=="[m
+[32m+[m[32m    },[m
+     "emoji-regex": {[m
+       "version": "9.2.2",[m
+       "resolved": "https://registry.npmjs.org/emoji-regex/-/emoji-regex-9.2.2.tgz",[m
+[36m@@ -8963,6 +8986,11 @@[m
+       "resolved": "https://registry.npmjs.org/yocto-queue/-/yocto-queue-0.1.0.tgz",[m
+       "integrity": "sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==",[m
+       "dev": true[m
+[32m+[m[32m    },[m
+[32m+[m[32m    "zod": {[m
+[32m+[m[32m      "version": "3.20.6",[m
+[32m+[m[32m      "resolved": "https://registry.npmjs.org/zod/-/zod-3.20.6.tgz",[m
+[32m+[m[32m      "integrity": "sha512-oyu0m54SGCtzh6EClBVqDDlAYRz4jrVtKwQ7ZnsEmMI9HnzuZFj8QFwAY1M5uniIYACdGvv0PBWPF2kO0aNofA=="[m
+     }[m
+   }[m
+ }[m
+[1mdiff --git a/package.json b/package.json[m
+[1mindex 72fd709..9e63745 100644[m
+[1m--- a/package.json[m
+[1m+++ b/package.json[m
+[36m@@ -18,8 +18,10 @@[m
+     "typescript": "^4.9.5"[m
+   },[m
+   "dependencies": {[m
+[32m+[m[32m    "dotenv": "^16.0.3",[m
+     "fastify": "^4.13.0",[m
+     "knex": "^2.4.2",[m
+[31m-    "sqlite3": "^5.1.4"[m
+[32m+[m[32m    "sqlite3": "^5.1.4",[m
+[32m+[m[32m    "zod": "^3.20.6"[m
+   }[m
+ }[m
+[1mdiff --git a/src/infra/database.ts b/src/infra/database.ts[m
+[1mindex eeb57bb..0cae16f 100644[m
+[1m--- a/src/infra/database.ts[m
+[1m+++ b/src/infra/database.ts[m
+[36m@@ -1,9 +1,10 @@[m
+ import { Knex, knex as setupKnex } from 'knex'[m
+[32m+[m[32mimport { env } from '../env'[m
+ [m
+ const config: Knex.Config = {[m
+   client: 'sqlite',[m
+   connection: {[m
+[31m-    filename: './db/app.db',[m
+[32m+[m[32m    filename: env.DATABASE_URL,[m
+   },[m
+   useNullAsDefault: true,[m
+   migrations: {[m
+[1mdiff --git a/src/server.ts b/src/server.ts[m
+[1mindex 927a3ac..80230b2 100644[m
+[1m--- a/src/server.ts[m
+[1m+++ b/src/server.ts[m
+[36m@@ -1,13 +1,15 @@[m
+ import fastify from 'fastify'[m
+[32m+[m[32mimport { env } from './env'[m
+[32m+[m[32mimport { transactionRoutes } from './infra/routes/transactions'[m
+ [m
+ const app = fastify()[m
+ [m
+[31m-app.get('/', () => {[m
+[31m-  return 'hello world'[m
+[32m+[m[32mapp.register(transactionRoutes, {[m
+[32m+[m[32m  prefix: '/transactions',[m
+ })[m
+ [m
+ app[m
+   .listen({[m
+[31m-    port: 3333,[m
+[32m+[m[32m    port: env.PORT,[m
+   })[m
+   .then(() => console.log('server is running'))[m

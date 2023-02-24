@@ -1,13 +1,15 @@
 import fastify from 'fastify'
+import { env } from './env'
+import { transactionRoutes } from './infra/routes/transactions'
 
 const app = fastify()
 
-app.get('/', () => {
-  return 'hello world'
+app.register(transactionRoutes, {
+  prefix: '/transactions',
 })
 
 app
   .listen({
-    port: 3333,
+    port: env.PORT,
   })
   .then(() => console.log('server is running'))
